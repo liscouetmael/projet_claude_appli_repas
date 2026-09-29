@@ -18,7 +18,7 @@
   "16": "Code Simplification",
   "17": "Debugging and Error Recovery",
   "18": "Documentation and ADRs",
-  "19": "Hardening Patterns",
+  "19": "ui",
   "20": "Interview Me",
   "21": "Planning and Task Breakdown",
   "22": "ReOrder: Keep Your Regulars Ordering Direct",
@@ -57,5 +57,6 @@
   "55": "review.md",
   "56": "spec.md",
   "57": "test.md",
-  "58": "sw.js"
+  "58": "sw.js",
+  "59": "zxing-browser-0.1.5.min.js"
 }

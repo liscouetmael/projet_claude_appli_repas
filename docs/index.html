@@ -36,6 +36,19 @@
 
   <!-- Ajouter un aliment -->
   <section id="ajout" class="vue" hidden>
+    <div class="carte">
+      <button id="scan-go">📷 Scanner un code-barres</button>
+      <form id="form-code" class="ligne" style="margin-top:8px">
+        <input type="text" id="scan-code" inputmode="numeric" placeholder="ou tape le numéro du code-barres">
+        <button type="submit">OK</button>
+      </form>
+      <div id="scan-zone" hidden>
+        <video id="scan-video" playsinline muted></video>
+        <button id="scan-annuler" class="secondaire">Annuler</button>
+      </div>
+      <p id="scan-etat" class="petit"></p>
+      <p class="petit">Produits de marque : données <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener">Open Food Facts</a> (licence ODbL).</p>
+    </div>
     <input type="search" id="recherche" placeholder="Rechercher un aliment (ex. riz cuit)" autocomplete="off">
     <ul id="resultats" class="liste"></ul>
     <form id="form-ajout" class="carte" hidden>
@@ -55,6 +68,7 @@
       <p class="petit">Crée un aliment absent de la base avec ses valeurs <strong>pour 100 g</strong> (voir l'étiquette). Il apparaîtra ensuite dans la recherche et le placard, marqué ★.</p>
       <form id="form-perso">
         <label>Nom <input type="text" name="nom" required placeholder="ex. Skyr vanille Marque X"></label>
+        <input type="hidden" name="code">
         <p class="petit">Énergie et macronutriments pour 100 g (laisse vide ce que tu ne connais pas)</p>
         <div id="perso-principaux"></div>
         <details><summary class="petit">Vitamines et minéraux (facultatif)</summary><div id="perso-micros"></div></details>

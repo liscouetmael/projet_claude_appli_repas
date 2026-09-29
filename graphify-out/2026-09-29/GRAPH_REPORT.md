@@ -1,14 +1,19 @@
 # Graph Report - projet_claude_appli_repas  (2026-09-29)
 
 ## Corpus Check
-- 63 files · ~104,156 words
+- 63 files · ~104,527 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .webmanifest 1, .css 1)
 
 ## Summary
-- 805 nodes · 767 edges · 59 communities (46 shown, 13 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 810 nodes · 775 edges · 59 communities (46 shown, 13 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `1d5d1fee`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Code Review and Quality
@@ -93,8 +98,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 2 - "app.js"
-Cohesion: 0.09
-Nodes (27): afficherVue(), ajouterAuJournal(), alimentParNom(), arrondi(), barre(), chercher(), CIQUAL, construirePrompt() (+19 more)
+Cohesion: 0.08
+Nodes (30): afficherVue(), ajouterAuJournal(), alimentParNom(), arrondi(), barre(), chercher(), CIQUAL, construirePrompt() (+22 more)
 
 ### Community 3 - "Context Engineering"
 Cohesion: 0.07
@@ -269,8 +274,8 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ## Knowledge Gaps
-- **596 isolated node(s):** `idea-refine.sh script`, `profil`, `journal`, `placard`, `ustensiles` (+591 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 658 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **598 isolated node(s):** `idea-refine.sh script`, `profil`, `journal`, `placard`, `ustensiles` (+593 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 662 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -279,13 +284,13 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Security and Hardening` connect `Hardening Controls` to `Hardening Patterns`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `idea-refine.sh script`, `profil`, `journal` to the rest of the system?**
-  _596 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _598 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Code Review and Quality` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `Test-Driven Development` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `app.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.0946969696969697 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08108108108108109 - nodes in this community are weakly interconnected._
 - **Should `Context Engineering` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `Git Workflow and Versioning` be split into smaller, more focused modules?**

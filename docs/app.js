@@ -98,15 +98,17 @@ $("#recherche").oninput = e => {
   const liste = chercher(e.target.value);
   $("#resultats").innerHTML = liste.map((f, i) =>
     `<li data-i="${i}"><div>${f[1] === GROUPE_PERSO ? "★ " : ""}${echapper(f[0])}<br><span class="petit">${Math.round(f[2])} kcal / 100 g</span></div></li>`).join("");
-  $("#resultats").querySelectorAll("li").forEach(li => li.onclick = () => {
-    alimentChoisi = liste[li.dataset.i];
-    $("#ajout-nom").textContent = alimentChoisi[0];
-    $("#form-ajout").hidden = false;
-    $("#resultats").innerHTML = "";
-    apercu();
-    $("#ajout-g").focus();
-  });
+  $("#resultats").querySelectorAll("li").forEach(li => li.onclick = () => choisirAliment(liste[li.dataset.i]));
 };
+function choisirAliment(f) {
+  alimentChoisi = f;
+  $("#ajout-nom").textContent = f[0];
+  $("#form-ajout").hidden = false;
+  $("#resultats").innerHTML = "";
+  apercu();
+  $("#form-ajout").scrollIntoView({ behavior: "smooth" });
+  $("#ajout-g").focus();
+}
 function apercu() {
   if (!alimentChoisi) return;
   const n = nutrimentsDe(alimentChoisi, +$("#ajout-g").value || 0);
@@ -163,13 +165,83 @@ formPerso.onsubmit = e => {
     const x = formPerso.elements[k]?.value;
     if (x !== undefined && x !== "") v[k] = parseFloat(x.replace(",", "."));
   }
+  const code = formPerso.elements.code.value || persos.find(p => p.nom === nom)?.code;
   // Remplace l'aliment s'il existe déjà (modification).
-  persos = [{ nom, v }, ...persos.filter(p => p.nom !== nom)];
+  persos = [{ nom, v, ...(code && { code }) }, ...persos.filter(p => p.nom !== nom)];
   CIQUAL.foods = [ligneAliment(persos[0]), ...CIQUAL.foods.filter(f => !(f[1] === GROUPE_PERSO && f[0] === nom))];
   ecrire("persos", persos);
-  formPerso.reset(); rendrePersos();
-  $("#perso-etat").textContent = `« ${nom} » enregistré : tu peux le rechercher.`;
+  formPerso.reset(); formPerso.elements.code.value = ""; rendrePersos();
+  $("#perso-etat").textContent = `« ${nom} » enregistré : indique la quantité mangée ci-dessus.`;
+  choisirAliment(CIQUAL.foods[0]);
 };
+
+// ---------- Scan de code-barres (Open Food Facts) ----------
+// Valeurs Open Food Facts pour 100 g, toujours en grammes : conversion vers nos unités.
+const OFF = {
+  kcal: ["energy-kcal", 1], prot: ["proteins", 1], gluc: ["carbohydrates", 1], lip: ["fat", 1],
+  sucres: ["sugars", 1], fibres: ["fiber", 1], ags: ["saturated-fat", 1], sel: ["salt", 1],
+  b1: ["vitamin-b1", 1e3], b2: ["vitamin-b2", 1e3], b3: ["vitamin-pp", 1e3], b5: ["pantothenic-acid", 1e3],
+  b6: ["vitamin-b6", 1e3], vitC: ["vitamin-c", 1e3], vitE: ["vitamin-e", 1e3], ca: ["calcium", 1e3],
+  cu: ["copper", 1e3], fe: ["iron", 1e3], mg: ["magnesium", 1e3], p: ["phosphorus", 1e3], k: ["potassium", 1e3],
+  zn: ["zinc", 1e3], vitA: ["vitamin-a", 1e6], vitD: ["vitamin-d", 1e6], vitK: ["vitamin-k", 1e6],
+  b9: ["vitamin-b9", 1e6], b12: ["vitamin-b12", 1e6], iode: ["iodine", 1e6], se: ["selenium", 1e6],
+};
+const etatScan = t => $("#scan-etat").textContent = t;
+
+async function produitDepuisCode(code) {
+  code = code.trim();
+  const deja = persos.find(p => p.code === code);
+  if (deja) { etatScan(`« ${deja.nom} » est déjà dans tes aliments.`); return choisirAliment(CIQUAL.foods.find(f => f[1] === GROUPE_PERSO && f[0] === deja.nom)); }
+  etatScan("Recherche du produit…");
+  try {
+    const rep = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(code)}.json?fields=product_name,product_name_fr,brands,nutriments`);
+    const d = await rep.json();
+    if (d.status !== 1) return etatScan("Produit inconnu d'Open Food Facts : crée-le à la main ci-dessous.");
+    const p = d.product, n = p.nutriments || {};
+    formPerso.reset();
+    formPerso.elements.nom.value = [p.brands?.split(",")[0], p.product_name_fr || p.product_name].filter(Boolean).join(" – ") || `Produit ${code}`;
+    formPerso.elements.code.value = code;
+    const kcal = n["energy-kcal_100g"] ?? (n["energy_100g"] != null ? n["energy_100g"] / 4.184 : null);
+    if (kcal != null) formPerso.elements.kcal.value = Math.round(kcal);
+    for (const [k, [cle, facteur]] of Object.entries(OFF))
+      if (k !== "kcal" && n[cle + "_100g"] != null) formPerso.elements[k].value = +(n[cle + "_100g"] * facteur).toPrecision(3);
+    formPerso.closest("details").open = true;
+    formPerso.scrollIntoView({ behavior: "smooth" });
+    etatScan("Produit trouvé : vérifie les valeurs avec l'étiquette puis enregistre.");
+  } catch {
+    etatScan("Pas de connexion à Open Food Facts : réessaie plus tard.");
+  }
+}
+
+let scanControles = null;
+async function chargerZXing() {
+  if (window.ZXingBrowser) return;
+  await new Promise((ok, ko) => {
+    const s = document.createElement("script");
+    s.src = "vendor/zxing-browser-0.1.5.min.js"; s.onload = ok; s.onerror = ko;
+    document.head.append(s);
+  });
+}
+function arreterScan() {
+  scanControles?.stop(); scanControles = null;
+  $("#scan-zone").hidden = true;
+}
+$("#scan-go").onclick = async () => {
+  try {
+    await chargerZXing();
+    $("#scan-zone").hidden = false;
+    etatScan("Vise le code-barres…");
+    const lecteur = new ZXingBrowser.BrowserMultiFormatReader();
+    scanControles = await lecteur.decodeFromConstraints(
+      { video: { facingMode: "environment" } }, $("#scan-video"),
+      resultat => { if (resultat) { arreterScan(); produitDepuisCode(resultat.getText()); } });
+  } catch {
+    arreterScan();
+    etatScan("Caméra indisponible : autorise l'accès à la caméra, ou tape le numéro du code-barres.");
+  }
+};
+$("#scan-annuler").onclick = () => { arreterScan(); etatScan(""); };
+$("#form-code").onsubmit = e => { e.preventDefault(); if ($("#scan-code").value.trim()) produitDepuisCode($("#scan-code").value); };
 
 // ---------- Vue Placard ----------
 const USTENSILES_COURANTS = ["Plaque de cuisson", "Casserole", "Poêle", "Four", "Micro-ondes", "Mixeur",
