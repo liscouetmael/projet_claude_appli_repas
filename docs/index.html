@@ -49,6 +49,20 @@
       <p id="ajout-apercu" class="petit"></p>
       <button type="submit">Ajouter au journal</button>
     </form>
+
+    <details class="carte">
+      <summary>Mes aliments (hors base)</summary>
+      <p class="petit">Crée un aliment absent de la base avec ses valeurs <strong>pour 100 g</strong> (voir l'étiquette). Il apparaîtra ensuite dans la recherche et le placard, marqué ★.</p>
+      <form id="form-perso">
+        <label>Nom <input type="text" name="nom" required placeholder="ex. Skyr vanille Marque X"></label>
+        <p class="petit">Énergie et macronutriments pour 100 g (laisse vide ce que tu ne connais pas)</p>
+        <div id="perso-principaux"></div>
+        <details><summary class="petit">Vitamines et minéraux (facultatif)</summary><div id="perso-micros"></div></details>
+        <button type="submit">Enregistrer l'aliment</button>
+        <p id="perso-etat" class="petit"></p>
+      </form>
+      <ul id="persos-liste" class="liste"></ul>
+    </details>
   </section>
 
   <!-- Suggestions -->

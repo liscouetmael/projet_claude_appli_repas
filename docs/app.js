@@ -6,6 +6,8 @@ let profil = lire("profil", null);
 let journal = lire("journal", {});          // { "2026-09-29": [{ nom, g, repas, n: {nutriments} }] }
 let placard = lire("placard", []);          // [nom Ciqual]
 let ustensiles = lire("ustensiles", ["Plaque de cuisson", "Casserole", "Poêle", "Four", "Micro-ondes"]);
+let persos = lire("persos", []);           // [{ nom, v: { kcal, prot, … } }] valeurs pour 100 g
+const GROUPE_PERSO = "Mes aliments";
 let CIQUAL = { keys: [], foods: [] };
 
 const $ = s => document.querySelector(s);
@@ -95,7 +97,7 @@ let alimentChoisi = null;
 $("#recherche").oninput = e => {
   const liste = chercher(e.target.value);
   $("#resultats").innerHTML = liste.map((f, i) =>
-    `<li data-i="${i}"><div>${echapper(f[0])}<br><span class="petit">${Math.round(f[2])} kcal / 100 g</span></div></li>`).join("");
+    `<li data-i="${i}"><div>${f[1] === GROUPE_PERSO ? "★ " : ""}${echapper(f[0])}<br><span class="petit">${Math.round(f[2])} kcal / 100 g</span></div></li>`).join("");
   $("#resultats").querySelectorAll("li").forEach(li => li.onclick = () => {
     alimentChoisi = liste[li.dataset.i];
     $("#ajout-nom").textContent = alimentChoisi[0];
@@ -123,6 +125,52 @@ $("#form-ajout").onsubmit = e => {
 const h = new Date().getHours();
 $("#ajout-repas").value = $("#sugg-repas").value = h < 10 ? "Petit-déjeuner" : h < 15 ? "Déjeuner" : h < 18 ? "Collation" : "Dîner";
 
+// ---------- Mes aliments (hors Ciqual) ----------
+// Même format qu'une ligne Ciqual, pour être utilisable partout (recherche, placard, suggestions).
+const ligneAliment = p => [p.nom, GROUPE_PERSO, ...CIQUAL.keys.map(k => p.v[k] ?? null)];
+const formPerso = $("#form-perso");
+const champ = k => `<label>${NUTRIMENTS[k].nom} (${NUTRIMENTS[k].unite}) <input type="number" name="${k}" step="any" min="0" inputmode="decimal"></label>`;
+$("#perso-principaux").innerHTML = ["kcal", ...MACROS].map(champ).join("");
+$("#perso-micros").innerHTML = MICROS.map(champ).join("");
+formPerso.elements.kcal.required = true;
+
+function rendrePersos() {
+  $("#persos-liste").innerHTML = persos.map((p, i) =>
+    `<li><div>★ ${echapper(p.nom)}<br><span class="petit">${Math.round(p.v.kcal)} kcal / 100 g</span></div>
+     <div><button class="suppr" data-modif="${i}" aria-label="Modifier">✎</button><button class="suppr" data-i="${i}" aria-label="Supprimer">✕</button></div></li>`).join("");
+  $("#persos-liste").querySelectorAll("[data-modif]").forEach(b => b.onclick = () => {
+    const p = persos[b.dataset.modif];
+    formPerso.reset();
+    formPerso.elements.nom.value = p.nom;
+    for (const [k, v] of Object.entries(p.v)) if (formPerso.elements[k]) formPerso.elements[k].value = v;
+    formPerso.closest("details").open = true;
+    formPerso.scrollIntoView({ behavior: "smooth" });
+  });
+  $("#persos-liste").querySelectorAll("[data-i]").forEach(b => b.onclick = () => {
+    const [p] = persos.splice(+b.dataset.i, 1);
+    CIQUAL.foods = CIQUAL.foods.filter(f => !(f[1] === GROUPE_PERSO && f[0] === p.nom));
+    ecrire("persos", persos); rendrePersos();
+  });
+}
+
+formPerso.onsubmit = e => {
+  e.preventDefault();
+  const nom = formPerso.elements.nom.value.trim();
+  if (CIQUAL.foods.some(f => f[0] === nom && f[1] !== GROUPE_PERSO))
+    return alert("Ce nom existe déjà dans la base Ciqual : choisis un nom différent.");
+  const v = {};
+  for (const k of Object.keys(NUTRIMENTS)) {
+    const x = formPerso.elements[k]?.value;
+    if (x !== undefined && x !== "") v[k] = parseFloat(x.replace(",", "."));
+  }
+  // Remplace l'aliment s'il existe déjà (modification).
+  persos = [{ nom, v }, ...persos.filter(p => p.nom !== nom)];
+  CIQUAL.foods = [ligneAliment(persos[0]), ...CIQUAL.foods.filter(f => !(f[1] === GROUPE_PERSO && f[0] === nom))];
+  ecrire("persos", persos);
+  formPerso.reset(); rendrePersos();
+  $("#perso-etat").textContent = `« ${nom} » enregistré : tu peux le rechercher.`;
+};
+
 // ---------- Vue Placard ----------
 const USTENSILES_COURANTS = ["Plaque de cuisson", "Casserole", "Poêle", "Four", "Micro-ondes", "Mixeur",
   "Cuiseur à riz", "Friteuse à air", "Autocuiseur", "Wok", "Grille-pain", "Robot cuiseur"];
@@ -145,7 +193,7 @@ function rendrePlacard() {
 }
 $("#placard-recherche").oninput = e => {
   const liste = chercher(e.target.value).filter(f => !placard.includes(f[0]));
-  $("#placard-resultats").innerHTML = liste.map((f, i) => `<li data-i="${i}">${echapper(f[0])}</li>`).join("");
+  $("#placard-resultats").innerHTML = liste.map((f, i) => `<li data-i="${i}">${f[1] === GROUPE_PERSO ? "★ " : ""}${echapper(f[0])}</li>`).join("");
   $("#placard-resultats").querySelectorAll("li").forEach(li => li.onclick = () => {
     placard.push(liste[li.dataset.i][0]); ecrire("placard", placard);
     $("#placard-recherche").value = ""; $("#placard-resultats").innerHTML = ""; rendrePlacard();
@@ -178,14 +226,14 @@ form.onsubmit = e => {
 };
 $("#cle-enregistrer").onclick = () => { localStorage.setItem("cleApi", $("#cle-api").value.trim()); alert("Clé enregistrée."); };
 $("#export").onclick = async () => {
-  const txt = JSON.stringify({ profil, journal, placard, ustensiles });
+  const txt = JSON.stringify({ profil, journal, placard, ustensiles, persos });
   try { await navigator.clipboard.writeText(txt); alert("Sauvegarde copiée : colle-la dans une note."); }
   catch { $("#import-texte").value = txt; alert("Copie impossible : la sauvegarde est affichée dans le champ ci-dessous."); }
 };
 $("#import").onclick = () => {
   try {
     const d = JSON.parse($("#import-texte").value);
-    for (const k of ["profil", "journal", "placard", "ustensiles"]) if (d[k] !== undefined) ecrire(k, d[k]);
+    for (const k of ["profil", "journal", "placard", "ustensiles", "persos"]) if (d[k] !== undefined) ecrire(k, d[k]);
     location.reload();
   } catch { alert("Sauvegarde invalide."); }
 };
@@ -398,7 +446,11 @@ function rendreSuggestions(liste, repas) {
 
 // ---------- Démarrage ----------
 (async function chargerCiqual(essais = 4) {
-  try { CIQUAL = await (await fetch("data/ciqual.json")).json(); }
+  try {
+    CIQUAL = await (await fetch("data/ciqual.json")).json();
+    CIQUAL.foods.unshift(...persos.map(ligneAliment));
+    rendrePersos();
+  }
   catch {
     if (essais > 1) return setTimeout(() => chargerCiqual(essais - 1), 1000);
     alert("La base d'aliments n'a pas pu être chargée : appuie sur ⟳.");
