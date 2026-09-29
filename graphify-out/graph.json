@@ -665,7 +665,7 @@
       "file_type": "code",
       "norm_label": "arreterscan()",
       "source_file": "docs/app.js",
-      "source_location": "L246"
+      "source_location": "L248"
     },
     {
       "id": "docs_app_arrondi",
@@ -725,7 +725,7 @@
       "file_type": "code",
       "norm_label": "chargerzxing()",
       "source_file": "docs/app.js",
-      "source_location": "L238"
+      "source_location": "L240"
     },
     {
       "id": "docs_app_chercher",
@@ -761,7 +761,7 @@
       "file_type": "code",
       "norm_label": "construireprompt()",
       "source_file": "docs/app.js",
-      "source_location": "L393"
+      "source_location": "L395"
     },
     {
       "id": "docs_app_decalerjour",
@@ -845,7 +845,7 @@
       "file_type": "code",
       "norm_label": "lirereponse()",
       "source_file": "docs/app.js",
-      "source_location": "L446"
+      "source_location": "L448"
     },
     {
       "id": "docs_app_manquesdujour",
@@ -857,7 +857,7 @@
       "file_type": "code",
       "norm_label": "manquesdujour()",
       "source_file": "docs/app.js",
-      "source_location": "L373"
+      "source_location": "L375"
     },
     {
       "id": "docs_app_normaliser",
@@ -881,7 +881,7 @@
       "file_type": "code",
       "norm_label": "prerequissuggestions()",
       "source_file": "docs/app.js",
-      "source_location": "L387"
+      "source_location": "L389"
     },
     {
       "id": "docs_app_produitdepuiscode",
@@ -929,7 +929,7 @@
       "file_type": "code",
       "norm_label": "rendreplacard()",
       "source_file": "docs/app.js",
-      "source_location": "L271"
+      "source_location": "L273"
     },
     {
       "id": "docs_app_rendreprofil",
@@ -941,7 +941,7 @@
       "file_type": "code",
       "norm_label": "rendreprofil()",
       "source_file": "docs/app.js",
-      "source_location": "L304"
+      "source_location": "L306"
     },
     {
       "id": "docs_app_rendresuggestions",
@@ -953,7 +953,7 @@
       "file_type": "code",
       "norm_label": "rendresuggestions()",
       "source_file": "docs/app.js",
-      "source_location": "L508"
+      "source_location": "L510"
     },
     {
       "id": "docs_nutrition_additionner",
@@ -965,7 +965,7 @@
       "file_type": "code",
       "norm_label": "additionner()",
       "source_file": "docs/nutrition.js",
-      "source_location": "L84"
+      "source_location": "L89"
     },
     {
       "id": "docs_nutrition_besoins",
@@ -977,7 +977,7 @@
       "file_type": "code",
       "norm_label": "besoins()",
       "source_file": "docs/nutrition.js",
-      "source_location": "L51"
+      "source_location": "L54"
     },
     {
       "id": "docs_nutrition_nutrimentsde",
@@ -989,7 +989,7 @@
       "file_type": "code",
       "norm_label": "nutrimentsde()",
       "source_file": "docs/nutrition.js",
-      "source_location": "L78"
+      "source_location": "L83"
     },
     {
       "id": "tools_build_ciqual_num",
@@ -1001,7 +1001,7 @@
       "file_type": "code",
       "norm_label": "num()",
       "source_file": "tools/build_ciqual.py",
-      "source_location": "L14"
+      "source_location": "L15"
     },
     {
       "id": "docs_vendor_zxing_browser_0_1_5_min_a",
@@ -5061,7 +5061,7 @@
       "file_type": "code",
       "norm_label": "form",
       "source_file": "docs/app.js",
-      "source_location": "L303"
+      "source_location": "L305"
     },
     {
       "id": "docs_app_formperso",
@@ -5149,7 +5149,7 @@
       "file_type": "code",
       "norm_label": "schema_repas",
       "source_file": "docs/app.js",
-      "source_location": "L337"
+      "source_location": "L339"
     },
     {
       "id": "docs_app_titres",
@@ -5182,7 +5182,7 @@
       "file_type": "code",
       "norm_label": "ustensiles_courants",
       "source_file": "docs/app.js",
-      "source_location": "L268"
+      "source_location": "L270"
     },
     {
       "id": "claude_skills_interview_me_skill",
@@ -8328,7 +8328,7 @@
       "file_type": "code",
       "norm_label": "macros",
       "source_file": "docs/nutrition.js",
-      "source_location": "L38"
+      "source_location": "L41"
     },
     {
       "id": "docs_nutrition_micro_ref",
@@ -8339,7 +8339,7 @@
       "file_type": "code",
       "norm_label": "micro_ref",
       "source_file": "docs/nutrition.js",
-      "source_location": "L43"
+      "source_location": "L46"
     },
     {
       "id": "docs_nutrition_micros",
@@ -8350,7 +8350,7 @@
       "file_type": "code",
       "norm_label": "micros",
       "source_file": "docs/nutrition.js",
-      "source_location": "L39"
+      "source_location": "L42"
     },
     {
       "id": "docs_nutrition_nutriments",
@@ -8361,7 +8361,7 @@
       "file_type": "code",
       "norm_label": "nutriments",
       "source_file": "docs/nutrition.js",
-      "source_location": "L7"
+      "source_location": "L8"
     },
     {
       "id": "claude_skills_graphify_references_query",
@@ -11127,7 +11127,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L407",
+      "source_location": "L409",
       "weight": 1.0
     },
     {
@@ -11151,7 +11151,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L451",
+      "source_location": "L453",
       "weight": 1.0
     },
     {
@@ -11163,7 +11163,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L380",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -11283,7 +11283,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L273",
+      "source_location": "L275",
       "weight": 1.0
     },
     {
@@ -11295,7 +11295,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L276",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -11307,7 +11307,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L276",
+      "source_location": "L278",
       "weight": 1.0
     },
     {
@@ -11319,7 +11319,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L512",
+      "source_location": "L514",
       "weight": 1.0
     },
     {
@@ -11331,7 +11331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L522",
+      "source_location": "L524",
       "weight": 1.0
     },
     {
@@ -11343,7 +11343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L533",
+      "source_location": "L535",
       "weight": 1.0
     },
     {
@@ -11355,7 +11355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L534",
+      "source_location": "L536",
       "weight": 1.0
     },
     {
@@ -12651,7 +12651,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "docs/app.js",
-      "source_location": "L271",
+      "source_location": "L273",
       "weight": 1.0
     },
     {
@@ -20520,7 +20520,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L238",
+      "source_location": "L240",
       "weight": 1.0
     },
     {
@@ -20531,7 +20531,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L246",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -20542,7 +20542,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L268",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -20553,7 +20553,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L303",
+      "source_location": "L305",
       "weight": 1.0
     },
     {
@@ -20564,7 +20564,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L304",
+      "source_location": "L306",
       "weight": 1.0
     },
     {
@@ -20597,7 +20597,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L337",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -20608,7 +20608,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L373",
+      "source_location": "L375",
       "weight": 1.0
     },
     {
@@ -20619,7 +20619,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L387",
+      "source_location": "L389",
       "weight": 1.0
     },
     {
@@ -20630,7 +20630,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L393",
+      "source_location": "L395",
       "weight": 1.0
     },
     {
@@ -20652,7 +20652,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L446",
+      "source_location": "L448",
       "weight": 1.0
     },
     {
@@ -20685,7 +20685,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/app.js",
-      "source_location": "L508",
+      "source_location": "L510",
       "weight": 1.0
     },
     {
@@ -20773,7 +20773,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L38",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -20784,7 +20784,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L39",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -20795,7 +20795,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L43",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -20806,7 +20806,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -20817,7 +20817,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -20828,7 +20828,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L78",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -20839,7 +20839,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/nutrition.js",
-      "source_location": "L84",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -21092,7 +21092,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/build_ciqual.py",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -21952,7 +21952,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "docs/app.js",
-      "source_location": "L544",
+      "source_location": "L546",
       "weight": 1.0
     },
     {
@@ -22065,5 +22065,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b252a004354131b55452d55b53dc33aa867f94f1"
+  "built_at_commit": "eb16fec1fe687acb7d74010daa940cd0ee0d0ba7"
 }

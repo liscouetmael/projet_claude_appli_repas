@@ -164,7 +164,7 @@ $("#perso-equiv").oninput = e => {
   $("#perso-equiv-res").innerHTML = liste.map((f, i) => `<li data-i="${i}">${echapper(f[0])}</li>`).join("");
   $("#perso-equiv-res").querySelectorAll("li").forEach(li => li.onclick = () => {
     const f = liste[li.dataset.i], remplis = [];
-    for (const k of ["fibres", ...MICROS]) {
+    for (const k of ["fibres", "ala", "epadha", ...MICROS]) {
       const val = f[CIQUAL.keys.indexOf(k) + 2], champ = formPerso.elements[k];
       if (champ.value === "" && val != null) { champ.value = +val.toPrecision(3); remplis.push(NUTRIMENTS[k].nom); }
     }
@@ -204,7 +204,7 @@ const OFF = {
   b1: ["vitamin-b1", 1e3], b2: ["vitamin-b2", 1e3], b3: ["vitamin-pp", 1e3], b5: ["pantothenic-acid", 1e3],
   b6: ["vitamin-b6", 1e3], vitC: ["vitamin-c", 1e3], vitE: ["vitamin-e", 1e3], ca: ["calcium", 1e3],
   cu: ["copper", 1e3], fe: ["iron", 1e3], mg: ["magnesium", 1e3], p: ["phosphorus", 1e3], k: ["potassium", 1e3],
-  zn: ["zinc", 1e3], vitA: ["vitamin-a", 1e6], vitD: ["vitamin-d", 1e6], vitK: ["vitamin-k", 1e6],
+  ala: ["alpha-linolenic-acid", 1], zn: ["zinc", 1e3], vitA: ["vitamin-a", 1e6], vitD: ["vitamin-d", 1e6], vitK: ["vitamin-k", 1e6],
   b9: ["vitamin-b9", 1e6], b12: ["vitamin-b12", 1e6], iode: ["iodine", 1e6], se: ["selenium", 1e6],
 };
 const etatScan = t => $("#scan-etat").textContent = t;
@@ -226,6 +226,8 @@ async function produitDepuisCode(code) {
     if (kcal != null) formPerso.elements.kcal.value = Math.round(kcal);
     for (const [k, [cle, facteur]] of Object.entries(OFF))
       if (k !== "kcal" && n[cle + "_100g"] != null) formPerso.elements[k].value = +(n[cle + "_100g"] * facteur).toPrecision(3);
+    const [epa, dha] = [n["eicosapentaenoic-acid_100g"], n["docosahexaenoic-acid_100g"]];
+    if (epa != null || dha != null) formPerso.elements.epadha.value = +(((epa || 0) + (dha || 0)) * 1e3).toPrecision(3);
     formPerso.closest("details").open = true;
     formPerso.scrollIntoView({ behavior: "smooth" });
     etatScan("Produit trouvé : vérifie les valeurs avec l'étiquette, complète avec Ciqual si besoin, puis enregistre.");

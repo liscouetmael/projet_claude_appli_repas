@@ -1,6 +1,7 @@
 // Besoins nutritionnels d'un adulte selon l'Anses.
 // Vitamines et minéraux : avis Anses 2018-SA-0238 (2021), tableaux 2 et 3 (RNP ou AS).
 // Macronutriments : Anses 2016 (protéines 0,83 g/kg, lipides 35-40 %, glucides 40-55 %, fibres 30 g, sucres < 100 g, AGS ≤ 12 %).
+// Oméga-3 : Anses 2011 (ALA 1 % de l'énergie, EPA + DHA 500 mg/j).
 // Sel : repère PNNS / OMS < 5 g/j.
 
 // Libellés, unités et sens de lecture : "min" = à atteindre, "max" = à ne pas dépasser.
@@ -13,6 +14,8 @@ const NUTRIMENTS = {
   sucres: { nom: "Sucres",        unite: "g",  sens: "max" },
   ags:    { nom: "AG saturés",    unite: "g",  sens: "max" },
   sel:    { nom: "Sel",           unite: "g",  sens: "max" },
+  ala:    { nom: "Oméga-3 ALA",   unite: "g",  sens: "min" },
+  epadha: { nom: "Oméga-3 EPA+DHA", unite: "mg", sens: "min" },
   vitA:   { nom: "Vitamine A",    unite: "µg", sens: "min" },
   b1:     { nom: "Vitamine B1",   unite: "mg", sens: "min" },
   b2:     { nom: "Vitamine B2",   unite: "mg", sens: "min" },
@@ -35,7 +38,7 @@ const NUTRIMENTS = {
   se:     { nom: "Sélénium",      unite: "µg", sens: "min" },
   zn:     { nom: "Zinc",          unite: "mg", sens: "min" },
 };
-const MACROS = ["prot", "gluc", "lip", "fibres", "sucres", "ags", "sel"];
+const MACROS = ["prot", "gluc", "lip", "fibres", "sucres", "ags", "sel", "ala", "epadha"];
 const MICROS = ["vitA", "b1", "b2", "b3", "b5", "b6", "b9", "b12", "vitC", "vitD", "vitE", "vitK",
                 "ca", "cu", "fe", "iode", "mg", "p", "k", "se", "zn"];
 
@@ -65,6 +68,8 @@ function besoins(p) {
     gluc: [kcal * 0.40 / 4, kcal * 0.55 / 4],
     lip: [kcal * 0.35 / 9, kcal * 0.40 / 9],
     fibres: 30, sucres: 100, ags: kcal * 0.12 / 9, sel: 5,
+    ala: kcal * 0.01 / 9, // 1 % de l'énergie (Anses 2011, acides gras)
+    epadha: 500,          // mg/j, dont 250 mg de DHA
     b1: 0.1 * kcal / 239,  // 0,1 mg/MJ
     b3: 1.6 * kcal / 239,  // 1,6 mg EN/MJ
     ca: p.age < 25 ? 1000 : 950,

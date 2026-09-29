@@ -1,7 +1,7 @@
 # Graph Report - projet_claude_appli_repas  (2026-09-29)
 
 ## Corpus Check
-- 64 files · ~113,475 words
+- 64 files · ~113,612 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .webmanifest 1, .css 1)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b252a004`
+- Built from commit: `eb16fec1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
