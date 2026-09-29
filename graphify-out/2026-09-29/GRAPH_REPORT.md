@@ -1,17 +1,17 @@
 # Graph Report - projet_claude_appli_repas  (2026-09-29)
 
 ## Corpus Check
-- 63 files · ~104,527 words
+- 64 files · ~113,272 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .webmanifest 1, .css 1)
 
 ## Summary
-- 810 nodes · 775 edges · 59 communities (46 shown, 13 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.85)
+- 908 nodes · 989 edges · 60 communities (46 shown, 14 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1d5d1fee`
+- Built from commit: `921beea7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,7 +35,7 @@
 - Code Simplification
 - Debugging and Error Recovery
 - Documentation and ADRs
-- Hardening Patterns
+- ui
 - Interview Me
 - Planning and Task Breakdown
 - ReOrder: Keep Your Regulars Ordering Direct
@@ -68,18 +68,19 @@
 - .claude/CLAUDE.md
 - extraction-spec.md
 - idea-refine.sh
+- zxing-browser-0.1.5.min.js
 
 ## God Nodes (most connected - your core abstractions)
-1. `Code Review and Quality` - 19 edges
-2. `Git Workflow and Versioning` - 15 edges
-3. `Test-Driven Development` - 15 edges
-4. `Browser Testing with DevTools` - 13 edges
-5. `CI/CD and Automation` - 13 edges
-6. `Frontend UI Engineering` - 13 edges
-7. `Shipping and Launch` - 13 edges
-8. `Context Engineering` - 12 edges
-9. `Debugging and Error Recovery` - 12 edges
-10. `Deprecation and Migration` - 12 edges
+1. `ui` - 49 edges
+2. `Code Review and Quality` - 19 edges
+3. `ni` - 15 edges
+4. `Git Workflow and Versioning` - 15 edges
+5. `Test-Driven Development` - 15 edges
+6. `Browser Testing with DevTools` - 13 edges
+7. `CI/CD and Automation` - 13 edges
+8. `Frontend UI Engineering` - 13 edges
+9. `Shipping and Launch` - 13 edges
+10. `Context Engineering` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -87,7 +88,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (59 total, 13 thin omitted)
+## Communities (60 total, 14 thin omitted)
 
 ### Community 0 - "Code Review and Quality"
 Cohesion: 0.07
@@ -98,8 +99,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 2 - "app.js"
-Cohesion: 0.08
-Nodes (30): afficherVue(), ajouterAuJournal(), alimentParNom(), arrondi(), barre(), chercher(), CIQUAL, construirePrompt() (+22 more)
+Cohesion: 0.07
+Nodes (35): afficherVue(), ajouterAuJournal(), alimentParNom(), apercu(), arrondi(), barre(), chercher(), choisirAliment() (+27 more)
 
 ### Community 3 - "Context Engineering"
 Cohesion: 0.07
@@ -146,8 +147,8 @@ Cohesion: 0.08
 Nodes (23): Adapter Pattern, Code Is a Liability, Common Rationalizations, Compulsory vs Advisory Deprecation, Core Principles, Database Schema Migrations (Expand/Contract), Deprecation and Migration, Deprecation Planning Starts at Design Time (+15 more)
 
 ### Community 14 - "Hardening Controls"
-Cohesion: 0.08
-Nodes (24): AI / LLM features, Always Do (No Exceptions), Ask First (Requires Human Approval), Authentication and sessions, Common Rationalizations, Dependencies and supply chain, Destructive operations on derived paths, Hardening Controls (+16 more)
+Cohesion: 0.05
+Nodes (42): Broken Access Control, Broken Authentication, Cross-Site Scripting (XSS), Data Classification, Dependency Audit Triage, Destructive Operations on Derived Paths, File Upload Safety, Hardening Patterns (+34 more)
 
 ### Community 15 - "Incremental Implementation"
 Cohesion: 0.09
@@ -164,10 +165,6 @@ Nodes (21): Build Failure Triage, Common Rationalizations, Debugging and Error R
 ### Community 18 - "Documentation and ADRs"
 Cohesion: 0.09
 Nodes (21): ADR Lifecycle, ADR Template, API Documentation, Architecture Decision Records (ADRs), Changelog Maintenance, Common Rationalizations, Document Known Gotchas, Documentation and ADRs (+13 more)
-
-### Community 19 - "Hardening Patterns"
-Cohesion: 0.10
-Nodes (18): Broken Access Control, Broken Authentication, Cross-Site Scripting (XSS), Data Classification, Dependency Audit Triage, Destructive Operations on Derived Paths, File Upload Safety, Hardening Patterns (+10 more)
 
 ### Community 20 - "Interview Me"
 Cohesion: 0.11
@@ -273,25 +270,29 @@ Nodes (3): For git commit hook, For native CLAUDE.md integration, graphify refer
 Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
+### Community 59 - "zxing-browser-0.1.5.min.js"
+Cohesion: 0.08
+Nodes (16): a(), constructor(), decodeBitmap(), e(), fi, ii(), li, n() (+8 more)
+
 ## Knowledge Gaps
-- **598 isolated node(s):** `idea-refine.sh script`, `profil`, `journal`, `placard`, `ustensiles` (+593 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 662 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **599 isolated node(s):** `idea-refine.sh script`, `profil`, `journal`, `placard`, `ustensiles` (+594 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 676 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Security and Hardening` connect `Hardening Controls` to `Hardening Patterns`?**
+- **Why does `ui` connect `ui` to `zxing-browser-0.1.5.min.js`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `ni` connect `zxing-browser-0.1.5.min.js` to `ui`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `idea-refine.sh script`, `profil`, `journal` to the rest of the system?**
-  _598 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _599 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Code Review and Quality` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `Test-Driven Development` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `app.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.08108108108108109 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06976744186046512 - nodes in this community are weakly interconnected._
 - **Should `Context Engineering` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
-- **Should `Git Workflow and Versioning` be split into smaller, more focused modules?**
-  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._

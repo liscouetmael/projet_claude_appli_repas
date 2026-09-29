@@ -35,7 +35,8 @@ function chercher(texte) {
   if (!mots.length) return [];
   return CIQUAL.foods
     .filter(f => { const n = normaliser(f[0]); return mots.every(m => n.includes(m)); })
-    .sort((a, b) => a[0].length - b[0].length)
+    // D'abord les noms qui commencent par le premier mot tapé, puis les plus courts.
+    .sort((a, b) => !normaliser(a[0]).startsWith(mots[0]) - !normaliser(b[0]).startsWith(mots[0]) || a[0].length - b[0].length)
     .slice(0, 30);
 }
 // Nom exact d'abord, puis sans tenir compte des majuscules ni des accents.
@@ -155,6 +156,26 @@ function rendrePersos() {
   });
 }
 
+// « Compléter avec Ciqual » : remplit uniquement les champs vides (fibres, vitamines, minéraux)
+// à partir d'un aliment Ciqual équivalent ; les valeurs de l'étiquette ne sont jamais modifiées.
+$("#perso-equiv").onkeydown = e => { if (e.key === "Enter") e.preventDefault(); };
+$("#perso-equiv").oninput = e => {
+  const liste = chercher(e.target.value).filter(f => f[1] !== GROUPE_PERSO);
+  $("#perso-equiv-res").innerHTML = liste.map((f, i) => `<li data-i="${i}">${echapper(f[0])}</li>`).join("");
+  $("#perso-equiv-res").querySelectorAll("li").forEach(li => li.onclick = () => {
+    const f = liste[li.dataset.i], remplis = [];
+    for (const k of ["fibres", ...MICROS]) {
+      const val = f[CIQUAL.keys.indexOf(k) + 2], champ = formPerso.elements[k];
+      if (champ.value === "" && val != null) { champ.value = +val.toPrecision(3); remplis.push(NUTRIMENTS[k].nom); }
+    }
+    $("#perso-equiv").value = ""; $("#perso-equiv-res").innerHTML = "";
+    $("#perso-micros").closest("details").open = true;
+    $("#perso-etat").textContent = remplis.length
+      ? `Complété avec « ${f[0]} » : ${remplis.length} valeurs ajoutées. Enregistre pour valider.`
+      : `Rien à compléter : tous les champs sont déjà remplis ou absents de « ${f[0]} ».`;
+  });
+};
+
 formPerso.onsubmit = e => {
   e.preventDefault();
   const nom = formPerso.elements.nom.value.trim();
@@ -207,7 +228,7 @@ async function produitDepuisCode(code) {
       if (k !== "kcal" && n[cle + "_100g"] != null) formPerso.elements[k].value = +(n[cle + "_100g"] * facteur).toPrecision(3);
     formPerso.closest("details").open = true;
     formPerso.scrollIntoView({ behavior: "smooth" });
-    etatScan("Produit trouvé : vérifie les valeurs avec l'étiquette puis enregistre.");
+    etatScan("Produit trouvé : vérifie les valeurs avec l'étiquette, complète avec Ciqual si besoin, puis enregistre.");
   } catch {
     etatScan("Pas de connexion à Open Food Facts : réessaie plus tard.");
   }
