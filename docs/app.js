@@ -36,7 +36,9 @@ function chercher(texte) {
     .sort((a, b) => a[0].length - b[0].length)
     .slice(0, 30);
 }
-const alimentParNom = nom => CIQUAL.foods.find(f => f[0] === nom);
+// Nom exact d'abord, puis sans tenir compte des majuscules ni des accents.
+const alimentParNom = nom => CIQUAL.foods.find(f => f[0] === nom)
+  || CIQUAL.foods.find(f => normaliser(f[0]) === normaliser(nom.trim()));
 
 // ---------- Vue Jour ----------
 function barre(nom, val, cible, unite, sens) {
@@ -240,16 +242,15 @@ function manquesDuJour() {
   return lignes.join("\n");
 }
 
-$("#sugg-go").onclick = async () => {
-  const cle = localStorage.getItem("cleApi");
-  const etat = $("#sugg-etat");
-  if (!profil) return etat.textContent = "Remplis d'abord ton profil.";
-  if (!cle) return etat.textContent = "Ajoute ta clé API Claude dans Profil.";
-  if (placard.length < 2) return etat.textContent = "Ajoute au moins quelques aliments à ton placard.";
-  etat.textContent = "Réflexion en cours… (jusqu'à une minute)";
-  $("#sugg-go").disabled = true;
-  const repas = $("#sugg-repas").value;
-  const prompt = `Tu es diététicien et cuisinier. Propose 5 idées pour le ${repas.toLowerCase()} :
+// Vérifie les prérequis ; renvoie un message d'erreur ou "".
+function prerequisSuggestions() {
+  if (!profil) return "Remplis d'abord ton profil.";
+  if (placard.length < 2) return "Ajoute au moins quelques aliments à ton placard.";
+  return "";
+}
+
+function construirePrompt(repas) {
+  return `Tu es diététicien et cuisinier. Propose 5 idées pour le ${repas.toLowerCase()} :
 - 2 repas de type "nutrition" : ils comblent au mieux les manques nutritionnels ci-dessous ;
 - 3 repas de type "plaisir" : gourmands mais qui restent équilibrés et sains.
 Contraintes strictes :
@@ -268,6 +269,69 @@ Placard :
 ${placard.join("\n")}
 
 Ustensiles : ${ustensiles.join(", ")}`;
+}
+
+// Option gratuite : copier la demande pour la coller dans l'appli Claude (ou une autre IA).
+$("#sugg-copier").onclick = async () => {
+  const etat = $("#sugg-etat");
+  const erreur = prerequisSuggestions();
+  if (erreur) return etat.textContent = erreur;
+  const texte = construirePrompt($("#sugg-repas").value) + `
+
+Pour chaque repas, donne : le nom, le type (nutrition ou plaisir), une phrase sur ce qu'il apporte, le temps de préparation,
+les ingrédients en grammes et les étapes (pas besoin de calculer les calories).
+
+Termine OBLIGATOIREMENT ta réponse par ce bloc, sans mise en forme, avec les noms d'aliments recopiés exactement depuis le placard :
+### ASSIETTE
+REPAS: <nom du repas> | <nutrition ou plaisir>
+<nom exact de l'aliment> ; <grammes>
+<nom exact de l'aliment> ; <grammes>
+REPAS: <nom du repas suivant> | <nutrition ou plaisir>
+...
+### FIN`;
+  try {
+    await navigator.clipboard.writeText(texte);
+    etat.textContent = "Demande copiée : colle-la dans l'appli Claude.";
+    $("#sugg-texte").hidden = true;
+  } catch {
+    $("#sugg-texte").value = texte;
+    $("#sugg-texte").hidden = false;
+    $("#sugg-texte").select();
+    etat.textContent = "Copie automatique impossible : sélectionne le texte ci-dessous et copie-le.";
+  }
+};
+
+// Lit le bloc "### ASSIETTE" de la réponse collée : lignes "REPAS: nom | type" puis "aliment ; grammes".
+function lireReponse(texte) {
+  const repas = [];
+  for (const brut of texte.split("\n")) {
+    const ligne = brut.replace(/^[\s>*`•-]+|[`*]+$/g, "").trim();
+    const m = ligne.match(/^REPAS\s*:\s*(.+?)\s*(?:\|\s*(\w+))?$/i);
+    if (m) repas.push({ nom: m[1], type: normaliser(m[2] || "").startsWith("nutri") ? "nutrition" : "plaisir", ingredients: [] });
+    else if (repas.length && ligne.includes(";")) {
+      const [aliment, g] = ligne.split(";");
+      const grammes = parseFloat(g.replace(",", "."));
+      if (aliment.trim() && grammes > 0) repas.at(-1).ingredients.push({ aliment: aliment.trim(), grammes });
+    }
+  }
+  return repas.filter(r => r.ingredients.length);
+}
+$("#reponse-calculer").onclick = () => {
+  const liste = lireReponse($("#reponse-texte").value);
+  if (!liste.length) return $("#sugg-etat").textContent = "Bloc « ### ASSIETTE » introuvable dans le texte collé : copie bien toute la réponse de Claude.";
+  $("#sugg-etat").textContent = "";
+  rendreSuggestions(liste, $("#sugg-repas").value);
+};
+
+$("#sugg-go").onclick = async () => {
+  const cle = localStorage.getItem("cleApi");
+  const etat = $("#sugg-etat");
+  const erreur = prerequisSuggestions() || (cle ? "" : "Pas de clé API : utilise « Copier la demande », ou ajoute une clé dans Profil.");
+  if (erreur) return etat.textContent = erreur;
+  etat.textContent = "Réflexion en cours… (jusqu'à une minute)";
+  $("#sugg-go").disabled = true;
+  const repas = $("#sugg-repas").value;
+  const prompt = construirePrompt(repas);
 
   try {
     const rep = await fetch("https://api.anthropic.com/v1/messages", {
@@ -315,13 +379,13 @@ function rendreSuggestions(liste, repas) {
     carte.innerHTML = `
       <span class="badge ${r.type}">${r.type === "nutrition" ? "Nutrition" : "Plaisir healthy"}</span>
       <h3>${echapper(r.nom)}</h3>
-      <p class="petit">${echapper(r.pourquoi)} · ${r.temps_minutes} min · ${echapper(r.ustensiles.join(", "))}</p>
+      ${r.pourquoi ? `<p class="petit">${echapper(r.pourquoi)} · ${r.temps_minutes} min · ${echapper(r.ustensiles.join(", "))}</p>` : ""}
       <p><strong>${Math.round(n.kcal)} kcal</strong> · P ${n.prot.toFixed(0)} g · G ${n.gluc.toFixed(0)} g · L ${n.lip.toFixed(0)} g · Fibres ${n.fibres.toFixed(0)} g</p>
       <p class="petit">Couvre : ${forts} de tes besoins du jour</p>
       <details><summary>Ingrédients et recette</summary>
         <ul>${ingr.map(i => `<li>${Math.round(i.grammes)} g ${echapper(i.aliment)}</li>`).join("")}</ul>
         ${ignores.length ? `<p class="petit">Hors placard, non compté : ${echapper(ignores.join(", "))}</p>` : ""}
-        <ol>${r.etapes.map(e => `<li>${echapper(e)}</li>`).join("")}</ol>
+        ${r.etapes ? `<ol>${r.etapes.map(e => `<li>${echapper(e)}</li>`).join("")}</ol>` : ""}
       </details>
       <button>J'ai mangé ça</button>`;
     carte.querySelector("button").onclick = () => {
@@ -333,8 +397,13 @@ function rendreSuggestions(liste, repas) {
 }
 
 // ---------- Démarrage ----------
-fetch("data/ciqual.json").then(r => r.json()).then(d => { CIQUAL = d; })
-  .catch(() => alert("La base d'aliments n'a pas pu être chargée : appuie sur ⟳."));
+(async function chargerCiqual(essais = 4) {
+  try { CIQUAL = await (await fetch("data/ciqual.json")).json(); }
+  catch {
+    if (essais > 1) return setTimeout(() => chargerCiqual(essais - 1), 1000);
+    alert("La base d'aliments n'a pas pu être chargée : appuie sur ⟳.");
+  }
+})();
 rendreProfil(); rendrePlacard();
 afficherVue(profil ? "jour" : "profil");
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");

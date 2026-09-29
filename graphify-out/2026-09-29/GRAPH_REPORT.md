@@ -1,12 +1,12 @@
 # Graph Report - projet_claude_appli_repas  (2026-09-29)
 
 ## Corpus Check
-- 63 files · ~104,156 words
+- 63 files · ~103,888 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 3 file(s) not represented in the graph (top: (none) 1, .webmanifest 1, .css 1)
 
 ## Summary
-- 805 nodes · 767 edges · 59 communities (46 shown, 13 thin omitted)
+- 804 nodes · 764 edges · 59 communities (46 shown, 13 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
@@ -94,7 +94,7 @@ Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DR
 
 ### Community 2 - "app.js"
 Cohesion: 0.09
-Nodes (27): afficherVue(), ajouterAuJournal(), alimentParNom(), arrondi(), barre(), chercher(), CIQUAL, construirePrompt() (+19 more)
+Nodes (26): afficherVue(), ajouterAuJournal(), alimentParNom(), arrondi(), barre(), chercher(), CIQUAL, construirePrompt() (+18 more)
 
 ### Community 3 - "Context Engineering"
 Cohesion: 0.07
@@ -285,7 +285,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Test-Driven Development` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
 - **Should `app.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.0946969696969697 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09475806451612903 - nodes in this community are weakly interconnected._
 - **Should `Context Engineering` be split into smaller, more focused modules?**
   _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
 - **Should `Git Workflow and Versioning` be split into smaller, more focused modules?**

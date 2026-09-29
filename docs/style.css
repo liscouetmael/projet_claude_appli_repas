@@ -26,6 +26,7 @@ button {
   background: var(--accent); color: #fff; cursor: pointer;
 }
 button:disabled { opacity: .5; }
+button.secondaire { background: var(--carte); color: var(--accent); border: 1px solid var(--bord); }
 #refresh { font-size: 1.3rem; padding: 4px 12px; background: transparent; color: var(--accent); border: 1px solid var(--bord); }
 
 input, select, textarea {

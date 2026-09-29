@@ -60,8 +60,18 @@
       </select>
     </label>
     <label>Envie particulière (facultatif) <input type="text" id="sugg-envie" placeholder="ex. rapide, épicé, froid…"></label>
-    <button id="sugg-go">Proposer des repas</button>
+    <div class="ligne">
+      <button id="sugg-copier">Copier la demande</button>
+      <button id="sugg-go" class="secondaire">Proposer ici (clé API)</button>
+    </div>
     <p id="sugg-etat" class="petit"></p>
+    <textarea id="sugg-texte" rows="8" readonly hidden></textarea>
+    <details class="carte" open>
+      <summary>Coller la réponse de Claude</summary>
+      <p class="petit">Copie toute la réponse de Claude et colle-la ici : l'appli calcule la valeur exacte de chaque repas avec Ciqual.</p>
+      <textarea id="reponse-texte" rows="4" placeholder="Colle la réponse ici"></textarea>
+      <button id="reponse-calculer">Calculer les repas</button>
+    </details>
     <div id="suggestions"></div>
   </section>
 
@@ -121,8 +131,8 @@
     </form>
 
     <details class="carte">
-      <summary>Suggestions IA (clé API Claude)</summary>
-      <p class="petit">La clé reste sur ce téléphone. Crée-la sur console.anthropic.com.</p>
+      <summary>Suggestions IA intégrées (facultatif, payant)</summary>
+      <p class="petit">Facultatif : sans clé, utilise « Copier la demande » dans l'onglet Repas. La clé (crédits prépayés sur console.anthropic.com) reste sur ce téléphone.</p>
       <input type="password" id="cle-api" placeholder="sk-ant-…" autocomplete="off">
       <button id="cle-enregistrer">Enregistrer la clé</button>
     </details>
