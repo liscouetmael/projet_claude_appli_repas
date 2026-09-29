@@ -1,21 +1,4 @@
 {
-  "extraKnownMarketplaces": {
-    "ponytail": {
-      "source": { "source": "github", "repo": "DietrichGebert/ponytail" }
-    },
-    "anthropic-agent-skills": {
-      "source": { "source": "github", "repo": "anthropics/skills" }
-    },
-    "addy-agent-skills": {
-      "source": { "source": "github", "repo": "addyosmani/agent-skills" }
-    }
-  },
-  "enabledPlugins": {
-    "ponytail@ponytail": true,
-    "document-skills@anthropic-agent-skills": true,
-    "example-skills@anthropic-agent-skills": true,
-    "agent-skills@addy-agent-skills": true
-  },
   "hooks": {
     "PreToolUse": [
       {
@@ -39,5 +22,24 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "document-skills@anthropic-agent-skills": true,
+    "example-skills@anthropic-agent-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
   }
 }

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Assiette">
+<meta name="theme-color" content="#2f7d5b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+<title>Assiette</title>
+</head>
+<body>
+<header>
+  <h1 id="titre">Aujourd'hui</h1>
+  <button id="refresh" aria-label="Rafraîchir">⟳</button>
+</header>
+
+<main>
+  <!-- Aujourd'hui -->
+  <section id="jour" class="vue">
+    <div class="nav-date">
+      <button id="jour-prec" aria-label="Jour précédent">‹</button>
+      <input type="date" id="date">
+      <button id="jour-suiv" aria-label="Jour suivant">›</button>
+    </div>
+    <div id="energie" class="carte"></div>
+    <div id="macros" class="carte"></div>
+    <details class="carte"><summary>Vitamines et minéraux</summary><div id="micros"></div></details>
+    <h2>Repas du jour</h2>
+    <ul id="journal" class="liste"></ul>
+  </section>
+
+  <!-- Ajouter un aliment -->
+  <section id="ajout" class="vue" hidden>
+    <input type="search" id="recherche" placeholder="Rechercher un aliment (ex. riz cuit)" autocomplete="off">
+    <ul id="resultats" class="liste"></ul>
+    <form id="form-ajout" class="carte" hidden>
+      <p id="ajout-nom"></p>
+      <label>Quantité (g) <input type="number" id="ajout-g" inputmode="decimal" min="1" value="100"></label>
+      <label>Repas
+        <select id="ajout-repas">
+          <option>Petit-déjeuner</option><option>Déjeuner</option><option>Collation</option><option>Dîner</option>
+        </select>
+      </label>
+      <p id="ajout-apercu" class="petit"></p>
+      <button type="submit">Ajouter au journal</button>
+    </form>
+  </section>
+
+  <!-- Suggestions -->
+  <section id="repas" class="vue" hidden>
+    <p class="petit">Propositions à partir de ton placard et de tes ustensiles, pour combler ce qu'il te manque aujourd'hui.</p>
+    <label>Pour quel repas ?
+      <select id="sugg-repas">
+        <option>Petit-déjeuner</option><option selected>Déjeuner</option><option>Collation</option><option>Dîner</option>
+      </select>
+    </label>
+    <label>Envie particulière (facultatif) <input type="text" id="sugg-envie" placeholder="ex. rapide, épicé, froid…"></label>
+    <button id="sugg-go">Proposer des repas</button>
+    <p id="sugg-etat" class="petit"></p>
+    <div id="suggestions"></div>
+  </section>
+
+  <!-- Placard -->
+  <section id="placard" class="vue" hidden>
+    <h2>Aliments disponibles</h2>
+    <input type="search" id="placard-recherche" placeholder="Ajouter un aliment au placard" autocomplete="off">
+    <ul id="placard-resultats" class="liste"></ul>
+    <ul id="placard-liste" class="liste"></ul>
+    <h2>Ustensiles</h2>
+    <div id="ustensiles" class="puces"></div>
+    <form id="form-ustensile" class="ligne">
+      <input type="text" id="ustensile-autre" placeholder="Autre ustensile">
+      <button type="submit">+</button>
+    </form>
+  </section>
+
+  <!-- Profil -->
+  <section id="profil" class="vue" hidden>
+    <form id="form-profil" class="carte">
+      <label>Sexe
+        <select name="sexe"><option value="F">Femme</option><option value="H">Homme</option></select>
+      </label>
+      <label>Âge (ans) <input type="number" name="age" min="18" max="110" inputmode="numeric" required></label>
+      <label>Poids (kg) <input type="number" name="poids" step="0.1" min="30" max="300" inputmode="decimal" required></label>
+      <label>Taille (cm) <input type="number" name="taille" min="120" max="230" inputmode="numeric" required></label>
+      <label>Activité physique
+        <select name="nap">
+          <option value="1.4">Sédentaire (bureau, peu de marche)</option>
+          <option value="1.6" selected>Modérée (marche quotidienne, sport 1-2×/sem.)</option>
+          <option value="1.8">Active (sport 3-5×/sem. ou métier physique)</option>
+          <option value="2.0">Très active (sport intense quotidien)</option>
+        </select>
+      </label>
+      <label>Objectif
+        <select name="objectif">
+          <option value="maintien">Maintenir mon poids</option>
+          <option value="perte">Perdre du poids (doucement)</option>
+          <option value="prise">Prendre du poids / du muscle</option>
+        </select>
+      </label>
+      <fieldset data-femme>
+        <legend>Situation (femmes)</legend>
+        <select name="situation">
+          <option value="">Aucune particularité</option>
+          <option value="regles-abondantes">Règles abondantes</option>
+          <option value="menopause">Ménopausée</option>
+          <option value="enceinte">Enceinte</option>
+          <option value="allaitante">Allaitante</option>
+        </select>
+      </fieldset>
+      <label>Régime / allergies / aliments refusés
+        <input type="text" name="regime" placeholder="ex. végétarien, sans lactose, pas de coriandre">
+      </label>
+      <button type="submit">Enregistrer</button>
+      <p id="profil-besoins" class="petit"></p>
+    </form>
+
+    <details class="carte">
+      <summary>Suggestions IA (clé API Claude)</summary>
+      <p class="petit">La clé reste sur ce téléphone. Crée-la sur console.anthropic.com.</p>
+      <input type="password" id="cle-api" placeholder="sk-ant-…" autocomplete="off">
+      <button id="cle-enregistrer">Enregistrer la clé</button>
+    </details>
+
+    <details class="carte">
+      <summary>Sauvegarde</summary>
+      <p class="petit">Tes données sont stockées uniquement sur ce téléphone. Exporte-les de temps en temps.</p>
+      <button id="export">Copier la sauvegarde</button>
+      <textarea id="import-texte" rows="3" placeholder="Colle une sauvegarde ici pour la restaurer"></textarea>
+      <button id="import">Restaurer</button>
+    </details>
+
+    <p class="petit">Sources : besoins — Anses, références nutritionnelles vitamines et minéraux (2021) et macronutriments (2016), dépense de repos selon Black et al. (1996) ;
+      composition — Anses, table Ciqual 2025 (Licence Etalab 2.0). Outil indicatif, ne remplace pas l'avis d'un médecin ou d'un diététicien.</p>
+  </section>
+</main>
+
+<nav>
+  <button data-vue="jour" class="actif">📊<span>Jour</span></button>
+  <button data-vue="ajout">➕<span>Ajouter</span></button>
+  <button data-vue="repas">🍽️<span>Repas</span></button>
+  <button data-vue="placard">🥫<span>Placard</span></button>
+  <button data-vue="profil">👤<span>Profil</span></button>
+</nav>
+
+<script src="nutrition.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
